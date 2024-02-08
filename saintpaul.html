@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questionnaire</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #c4c3ca;
+      background-color: #1f2029;
+      overflow-x: hidden;
+    }
+
+    #question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-container {
+      width: 60%;
+      height: 60%;
+      background-color: #2a2b38;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
+      background-position: bottom center;
+      background-repeat: no-repeat;
+      background-size: 300%;
+      position: absolute;
+      border-radius: 6px;
+      left: 0;
+      top: 0;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      -o-backface-visibility: hidden;
+      backface-visibility: hidden;
+      margin: 100px 50px 0 50px;
+      padding: 30px;
+    }
+
+    .form-style {
+      padding: 8px 15px;
+      height: 48px;
+      width: 90%;
+      font-weight: 500;
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 22px;
+      letter-spacing: 0.5px;
+      outline: none;
+      color: #c4c3ca;
+      background-color: #1f2029;
+      border: none;
+      -webkit-transition: all 200ms linear;
+      transition: all 200ms linear;
+      box-shadow: 0 4px 8px 0 rgba(21, 21, 21, .2);
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .form-style.error {
+      border: 2px solid red;
+    }
+
+    .result {
+      display: none;
+      font-size: 24px;
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 6px;
+    }
+
+    .button {
+      margin-left: 50px;
+      border-radius: 4px;
+      height: 44px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      -webkit-transition: all 200ms linear;
+      transition: all 200ms linear;
+      padding: 0 30px;
+      letter-spacing: 1px;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      -ms-justify-content: center;
+      justify-content: center;
+      -ms-flex-pack: center;
+      text-align: center;
+      border: none;
+      background-color: #ffeba7;
+      color: #102770;
+      box-shadow: 0 8px 24px 0 rgba(255, 235, 167, .2);
+    }
+
+    .button:active,
+    .button:focus {
+      background-color: #102770;
+      color: #ffeba7;
+      box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
+    }
+
+    .button:hover {
+      background-color: #102770;
+      color: #ffeba7;
+      box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="question-container">
+    <div class="questions">
+      <div class="question" id="question"></div>
+      <input type="number" class="form-style" id="teamNumber" placeholder="Enter your team number">
+      <input type="text" class="form-style" id="answer" placeholder="Enter your answer">
+      <button class="button" onclick="checkAnswer()">Submit</button>
+    </div>
+    <div class="result" id="result">Yala Ro7</div>
+  </div>
+
+  <script>
+    const commonQuestions = [
+      "ما الشيء الذي يكبر حينما يتم أخذ المزيد منه؟",
+     "أنا خفيف مثل الريشة، ولكن أقوى شخص لا يمكنه أن يمسكني لخمس دقائق، فما أنا؟", 
+     "ما هو الشيء الذي يسمح لك بالنظر مباشرة من خلال الحائط؟", 
+     "عندما تحصل عليّ، تريد مشاركتي، وإذا شاركتني، فأنت لم تحفظني، فما أنا؟", 
+     "ما الشيء الذي لا يمكن وضعه داخل القدر؟",
+    "ما الذي يذهب صعودًا وهبوطًا ولكنه لا يتحرك؟",
+    "شيء ملك لك، إلا أن الآخرين يستخدمونه أكثر منك، فما هو؟",
+    "ما هو الشيء الذي يقرصك دون أن ترى منه شيء؟",
+  "ما شيء الذي لديه يد ولكن لا يمكنه التصفيق؟",
+  "ما الذي يمتلك الكثير من العيون، ولكنه لا يستطيع أن يرى؟"];
+    const commonAnswer = [
+      "حفرة",
+     "الانفاس",
+      "النافذة", 
+      "السر", 
+      "الغطاء", 
+      "السلم",
+     "اسمي",
+    "الجوع",
+    "الساعة",
+    "البطاطس"];
+    // Define questions for each team
+    const teamQuestions = {
+      1: [...commonQuestions],
+      3: [...commonQuestions],
+      4: [...commonQuestions],
+      2: [...commonQuestions],
+      5: [...commonQuestions],
+      6: [...commonQuestions],
+      7: [...commonQuestions],
+      8: [...commonQuestions],
+    };
+
+    const teamAnswers = {
+      1: [...commonAnswer],
+      2: [...commonAnswer],
+      3: [...commonAnswer],
+      4: [...commonAnswer],
+      5: [...commonAnswer],
+      6: [...commonAnswer],
+      7: [...commonAnswer],
+      8: [...commonAnswer],
+    };
+
+    let currentQuestionIndex = 0;
+
+    function displayQuestion(teamNumber) {
+      const questions = teamQuestions[teamNumber];
+      document.getElementById("question").textContent = questions[currentQuestionIndex];
+    }
+
+    function checkAnswer() {
+      const userInput = document.getElementById("answer").value.trim().toLowerCase();
+      const teamNumber = parseInt(document.getElementById("teamNumber").value.trim());
+      const correctAnswer = teamAnswers[teamNumber][currentQuestionIndex].toLowerCase();
+      const answerInput = document.getElementById("answer");
+      const divQuestion = document.querySelector(".questions");
+      const resultDiv = document.getElementById("result");
+
+      if (userInput === correctAnswer) {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < teamQuestions[teamNumber].length) {
+          displayQuestion(teamNumber);
+          answerInput.classList.remove("error"); // Remove error style if it's correct
+        } else {
+          switch (teamNumber) {
+              case 1:
+                  resultDiv.textContent =  "Yala ro7 le Ayman Ashraf";
+                  break;
+              case 2:
+                  resultDiv.textContent =  "Yala ro7 le  Marine Mountaser";
+                  break;
+              case 3:
+                  resultDiv.textContent = "Yala ro7 le  Youanna Melik";
+                  break;
+              case 4:
+              resultDiv.textContent = "Yala ro7 le  Andrew Hany";
+                  break;
+              case 5:
+              resultDiv.textContent = "Yala ro7 le  Seif Mofeed";
+                  break;
+              case 6:
+              resultDiv.textContent = "Yala ro7 le  Mina Mamdoh";
+                  break;
+              case 7:
+              resultDiv.textContent =  "Yala ro7 le  Tony Talaat";
+                  break;
+              case 8:
+              resultDiv.textContent = "Yala ro7 le Mina Mourad";
+                  break;
+          }
+          resultDiv.style.display = "block"; // Show result
+          divQuestion.style.display = "none"; // Show question
+          }
+      } else {
+        answerInput.classList.add("error"); // Add error style
+      }
+    }
+
+
+    // Display the first question when the page loads
+    // Assuming team number 1 as default
+    displayQuestion(1);
+  </script>
+</body>
+
+</html>
